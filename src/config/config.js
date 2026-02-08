@@ -14,38 +14,6 @@ const SKIP_HIDDEN_SHEETS = true;
 const HEADER_ROW = 1;
 
 
-/***** MENU (use exactly as provided) *****/
-function onOpen() {
-  SpreadsheetApp.getUi()
-    .createMenu("Visit Consolidation")
-    .addSubMenu(
-      SpreadsheetApp.getUi()
-        .createMenu("1) Rebuild RAW (direct copy)")
-        .addItem("Rebuild 2024 Tab (RAW)", "rebuild2024")
-        .addItem("Rebuild 2025 Tab (RAW)", "rebuild2025")
-        .addItem("Rebuild 2026 Tab (RAW)", "rebuild2026")
-        .addItem("Rebuild ALL Year Tabs (RAW)", "rebuildAllYears")
-    )
-    .addSubMenu(
-      SpreadsheetApp.getUi()
-        .createMenu("2) Normalize Canonical Dates")
-        .addItem("Normalize Dates: 2024", "normalizeDates2024")
-        .addItem("Normalize Dates: 2025", "normalizeDates2025")
-        .addItem("Normalize Dates: 2026", "normalizeDates2026")
-        .addItem("Normalize Dates: ALL", "normalizeDatesAllYears")
-    )
-    .addSubMenu(
-      SpreadsheetApp.getUi()
-        .createMenu("3) Normalize HA Names")
-        .addItem("Normalize HA Names: 2024", "normalizeAgencies2024")
-        .addItem("Normalize HA Names: 2025", "normalizeAgencies2025")
-        .addItem("Normalize HA Names: 2026", "normalizeAgencies2026")
-        .addItem("Normalize HA Names: ALL", "normalizeAgenciesAllYears")
-    )
-    .addToUi();
-}
-
-
 /***** STEP 1: REBUILD RAW (direct copy) *****/
 function rebuild2024() { rebuildYear_("2024"); }
 function rebuild2025() { rebuildYear_("2025"); }
@@ -134,15 +102,3 @@ function getOrCreateSheet_(ss, sheetName) {
   if (!sh) sh = ss.insertSheet(sheetName);
   return sh;
 }
-
-
-/***** PLACEHOLDERS ONLY — DO NOT IMPLEMENT UNTIL YOU TELL ME *****/
-function normalizeDates2024() { throw new Error("Not implemented yet (waiting for instruction)."); }
-function normalizeDates2025() { throw new Error("Not implemented yet (waiting for instruction)."); }
-function normalizeDates2026() { throw new Error("Not implemented yet (waiting for instruction)."); }
-function normalizeDatesAllYears() { throw new Error("Not implemented yet (waiting for instruction)."); }
-
-function normalizeAgencies2024() { throw new Error("Not implemented yet (waiting for instruction)."); }
-function normalizeAgencies2025() { throw new Error("Not implemented yet (waiting for instruction)."); }
-function normalizeAgencies2026() { throw new Error("Not implemented yet (waiting for instruction)."); }
-function normalizeAgenciesAllYears() { throw new Error("Not implemented yet (waiting for instruction)."); }

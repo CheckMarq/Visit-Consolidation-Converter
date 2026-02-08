@@ -13,15 +13,30 @@ const _BASE_OVERRIDES = {
   "ALL ABOUT YOU": "CM All About You",
 };
 
-const _CANON_BASE_TO_CANON = (() => {
+let _CANON_BASE_TO_CANON_CACHE = null;
+
+function _getCanonBaseToCanon_() {
+  if (_CANON_BASE_TO_CANON_CACHE) return _CANON_BASE_TO_CANON_CACHE;
+
+  if (typeof CANONICAL_AGENCIES === "undefined" || !Array.isArray(CANONICAL_AGENCIES)) {
+    SpreadsheetApp.getUi().alert(
+      "CANONICAL_AGENCIES is missing.\n\n" +
+      "Add your approved CANONICAL_AGENCIES list to the project, then re-run Normalize HA Names."
+    );
+    throw new Error("CANONICAL_AGENCIES is not defined.");
+  }
+
   const map = {};
   for (const canon of CANONICAL_AGENCIES) {
     const b = _agencyBaseKey_(canon);
     if (!map[b]) map[b] = [];
     map[b].push(canon);
   }
+
+  _CANON_BASE_TO_CANON_CACHE = map;
   return map;
-})();
+}
+
 
 function normalizeAgencies2024() { normalizeAgenciesOnYearSheet_("2024"); }
 function normalizeAgencies2025() { normalizeAgenciesOnYearSheet_("2025"); }
@@ -83,7 +98,8 @@ function resolveCanonicalAgencyName_(rawName) {
   // Overrides for known rollups
   if (_BASE_OVERRIDES[base]) return _BASE_OVERRIDES[base];
 
-  const candidates = _CANON_BASE_TO_CANON[base] || [];
+  const canonMap = _getCanonBaseToCanon_();
+  const candidates = canonMap[base] || [];
   if (candidates.length === 1) return candidates[0];
 
   if (candidates.length > 1) {
